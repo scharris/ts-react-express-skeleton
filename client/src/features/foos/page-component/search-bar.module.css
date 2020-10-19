@@ -1,0 +1,24 @@
+.searchBar {
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   margin: 10px 0;
+   padding: 10px;
+   border: 5px solid lightgray;
+}
+
+.searchBar label {
+   display: flex;
+   flex-grow: 1;
+}
+
+.searchBar input {
+   margin: 0 10px;
+   flex-grow: 1;
+}
+
+.searchBar button {
+   color: white;
+   background-color: darkgreen;
+}
+

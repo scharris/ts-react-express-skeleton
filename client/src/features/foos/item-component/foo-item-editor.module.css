@@ -1,0 +1,9 @@
+button.acceptEdits {
+   color: white;
+   background-color: green;
+}
+
+button.cancel {
+   color: white;
+   background-color: black;
+}

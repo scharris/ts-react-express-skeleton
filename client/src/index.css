@@ -1,0 +1,29 @@
+@import-normalize;
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+.some-global-style {
+  border: 10px solid darkblue;
+  padding: 5px;
+}
+
+button.action {
+   margin: 0 10px;
+   font-size: 15px;
+   padding: 5px 15px;
+   border-radius: 5px;
+   cursor: pointer;
+}
+

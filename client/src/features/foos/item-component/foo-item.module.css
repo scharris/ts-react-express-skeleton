@@ -1,0 +1,44 @@
+
+.fooRow {
+   display: grid;
+   grid-template-columns: auto auto 1fr 1fr auto auto;
+   align-items: center;
+}
+
+button.edit {
+   color: white;
+   background-color: black;
+}
+
+button.delete {
+   color: white;
+   background-color: darkred;
+}
+
+.id {
+   color: lightblue;
+   margin: 0 10px;
+   background-color: #444;
+   padding: 5px;
+   border: 2px solid gray;
+}
+
+.category {
+   color: gray;
+   margin: 0 10px;
+   padding: 5px;
+   background: aliceblue;
+   border: 2px solid lightblue;
+}
+
+.name {
+   font-weight: bold;
+   padding: 5px;
+   margin: 0 10px;
+}
+
+.description {
+   border-left: 10px solid darkgray;
+   padding: 5px;
+   margin: 0 10px;
+}

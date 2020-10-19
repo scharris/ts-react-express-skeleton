@@ -1,0 +1,18 @@
+.mainStack {
+   display: flex;
+   flex-flow: column nowrap;
+   padding: 10px;
+   border-top: 5px solid lightgray;
+   border-bottom: 5px solid lightgray;
+}
+
+.listItem {
+   margin: 5px;
+}
+
+.noFoos {
+   padding: 10px;
+   background: darkslategray;
+   color: wheat;
+   border: 2px solid gray;
+}
