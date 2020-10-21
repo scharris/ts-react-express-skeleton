@@ -4,10 +4,14 @@
    "description": "",
    "main": "server.js",
    "scripts": {
-      "build": "cd ../client && npm run build && cd ../server && webpack --config webpack/prod.config.js",
+      "build-client-prod": "cd ../client && npm run build",
+      "build-server-prod": "webpack --config webpack/prod.config.js",
+      "build": "npm run build-client-prod && npm run build-server-prod",
       "start": "node dist/server dist/public envs/local-dev.env",
-      "watch": "webpack --config webpack/dev.config.js",
-      "build-start": "npm run build && npm run start"
+      "build-start": "npm run build && npm run start",
+      "build-server-dev": "webpack --config webpack/dev.nowatch.config.js",
+      "start-client-dev": "cd ../client && npm run start",
+      "dev": "npm run build-server-dev && concurrently \"npm:start-client-dev\" \"npm:start\""
    },
    "keywords": [],
    "author": "",
@@ -25,6 +29,7 @@
       "@types/helmet": "0.0.48",
       "@types/node": "^14.11.5",
       "clean-webpack-plugin": "^3.0.0",
+      "concurrently": "^5.3.0",
       "copy-webpack-plugin": "^6.2.0",
       "npm-run-all": "^4.1.5",
       "ts-loader": "^8.0.4",
