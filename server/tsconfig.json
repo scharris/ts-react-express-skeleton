@@ -4,10 +4,11 @@
     /* See https://stackoverflow.com/a/59787575  for target/lib combinations supported by various node.js releases. */
     "target": "es2020",
     "lib": ["es2020"],
-    "module": "commonjs",
+    "module": "es2020",
+    "moduleResolution": "node",
     "strict": true,
-    "esModuleInterop": true,                /* Enables emit interoperability between CommonJS and ES Modules via creation of namespace objects for all imports. Implies 'allowSyntheticDefaultImports'. */
-    "skipLibCheck": true,                     /* Skip type checking of declaration files. */
-    "forceConsistentCasingInFileNames": true  /* Disallow inconsistently-cased references to the same file. */
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
   }
 }
