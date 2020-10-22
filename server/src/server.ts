@@ -25,6 +25,7 @@ app.use(express.static(publicDir));
 // for inline scripts.
 app.use(helmet({ contentSecurityPolicy: false }));
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use("/api", apiRouter);
 
 // Enable deep links into the app by serving index.html for any routes not recognized above.
@@ -34,7 +35,6 @@ app.get('/*', function (req, res) {
 
 /** error handling */
 app.use(httpErrorHandler); // General http errors, other than 404.
-app.use(notFoundHandler);  // Last handler, anything not matched at this point results in 404.
 
 
 /** Run the server. */
