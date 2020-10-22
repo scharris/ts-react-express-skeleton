@@ -1,10 +1,12 @@
 import React, {FunctionComponent, useEffect, useState} from 'react';
 import {RouteComponentProps, useParams} from 'react-router';
 import {Foo} from 'dto';
-import {getFoos, deleteFoo as serverDeleteFoo, updateFoo as serverUpdateFoo} from '../foos-service';
+import {getFoos, deleteFoo as serverDeleteFoo, updateFoo as serverUpdateFoo,
+        createFoo as serverCreateFoo} from '../foos-service';
 import {FooItemsListing} from '../listing-component/foo-items-listing';
 import {SearchBar} from './search-bar';
 import styles from './foo-items-page.module.css';
+import {FooItemEditor} from '../item-component/foo-item-editor';
 
 export const FooItemsPage: FunctionComponent<RouteComponentProps> = (props) =>
 {
@@ -20,16 +22,21 @@ export const FooItemsPage: FunctionComponent<RouteComponentProps> = (props) =>
       setLoading(false);
    }
 
-   async function deleteFoo(ix: number)
+   async function createFoo(foo: Foo)
    {
-      await serverDeleteFoo(foos[ix].id);
+      await serverCreateFoo(foo);
       await loadData();
    }
-
    async function updateFoo(ix: number, foo: Foo)
    {
       setLoading(true); // Prevents seeing old values during reloading.
       await serverUpdateFoo(foos[ix].id, foo);
+      await loadData();
+   }
+
+   async function deleteFoo(ix: number)
+   {
+      await serverDeleteFoo(foos[ix].id);
       await loadData();
    }
 
@@ -50,6 +57,7 @@ export const FooItemsPage: FunctionComponent<RouteComponentProps> = (props) =>
                search={loadData} />
             { results }
          </div>
+         <FooItemEditor foo={null} completeEditing={createFoo} />
       </div>
    );
 }

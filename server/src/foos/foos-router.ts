@@ -27,9 +27,12 @@ router.get("/:id", async (req: Request, res: Response) =>
 
    try
    {
-      const foo: Foo = await FoosService.getFoo(id);
+      const foo: Foo | null = await FoosService.getFoo(id);
 
-      res.status(200).send(foo);
+      if ( foo == null )
+         res.sendStatus(404);
+      else
+         res.status(200).send(foo);
    }
    catch (e)
    {

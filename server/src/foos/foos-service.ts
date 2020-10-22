@@ -1,71 +1,61 @@
 import {Foo} from 'dto';
-
-const allFoos: Foo[] = [
-   { id: 1, name: 'first A', category: 'A', description: 'The first item of type A.' },
-   { id: 2, name: 'second A', category: 'A', description: 'The second item of type A.'  },
-   { id: 3, name: 'first B', category: 'B', description: 'The first item of type B.' },
-   { id: 4, name: 'second B', category: 'B', description: 'The second item of type B.'  },
-   { id: 5, name: 'third B', category: 'B', description: 'The third item of type B.' },
-   { id: 6, name: 'fourth B', category: 'B', description: 'The fourth item of type B.' },
-];
+import {execSql} from '../db/pool-executor';
 
 export async function getFoos(searchText: string | null): Promise<Foo[]>
 {
-   if ( !searchText )
-      return allFoos;
+   const sql =
+      "select id, name, category, description " +
+      "from foo " +
+      "where cast(id as text) ilike $1 or name ilike $1 or category ilike $1 or description ilike $1 " +
+      "order by id";
 
-   const matches = (foo: Foo, s: string) =>
-      foo.id.toString().indexOf(s) !== -1 ||
-      foo.category.indexOf(s) !== -1 ||
-      foo.name.indexOf(s) !== -1 ||
-      foo.description && foo.description.indexOf(s) !== -1;
+   const res = await execSql(sql, ['%' + (searchText || '') + '%']);
 
-   return allFoos.filter(foo => matches(foo, searchText));
+   return res.rows.map(rowToFoo);
 }
 
-export async function getFoo(id: number): Promise<Foo>
+export async function getFoo(id: number): Promise<Foo | null>
 {
-   const item = findFoo(id);
+   const res = await execSql("select id, name, category, description from foo where id = $1", [id]);
 
-   if ( !item )
-      throw new Error("Item not found.");
-
-   return item;
+   return res.rowCount !== 0 ? rowToFoo(res.rows[0]) : null;
 }
 
-export async function createFoo(item: Foo): Promise<void>
+export async function createFoo(foo: Foo): Promise<void>
 {
-   const existingItem: Foo | null = findFoo(item.id);
+   const res = await execSql(
+      "insert into foo(name, category, description) values($1, $2, $3)",
+      [foo.name, foo.category, foo.description]
+   );
 
-   if ( existingItem != null )
-      throw new Error("Item of given id already exists.");
-
-   allFoos.push(Object.assign({}, item));
+   if ( res.rowCount !== 1 )
+      throw new Error('Expected one row to be modified when creating foo.');
 }
 
-export async function updateFoo(id: number, newValue: Foo): Promise<void>
+export async function updateFoo(id: number, foo: Foo): Promise<void>
 {
-   const existingItem: Foo | null = findFoo(id);
+   if ( foo.id !== id )
+      throw new Error("Cannot change foo id field via update.");
 
-   if ( existingItem == null )
-      throw new Error("Item not found.");
-   if ( existingItem.id !== newValue.id )
-      throw new Error("Cannot update key field.");
+   const res = await execSql(
+      "update foo set name = $1, category = $2, description = $3 where id = $4",
+      [foo.name, foo.category, foo.description, id]
+   );
 
-   Object.assign(existingItem, newValue);
+   if ( res.rowCount !== 1 )
+      throw new Error('Expected one row to be modified when updating a foo, instead modified ' + res.rowCount + ".");
 }
 
 export async function removeFoo(id: number): Promise<void>
 {
-   const ix = allFoos.findIndex(i => i.id === id);
+   const res = await execSql("delete from foo where id = $1", [id]);
 
-   if ( ix === -1 )
-      throw new Error("Item not found.");
-
-   allFoos.splice(ix, 1);
+   if ( res.rowCount !== 1 )
+      throw new Error('Expected one row to be modified when deleting a foo, instead modified ' + res.rowCount + ".");
 }
 
-function findFoo(id: number): Foo | null
+
+function rowToFoo(r: any): Foo
 {
-   return allFoos.find(i => i.id === id) || null;
+   return { id: r.id, name: r.name, category: r.category, description: r.description };
 }

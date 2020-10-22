@@ -1,19 +1,14 @@
 import express from "express";
 import helmet from "helmet";
-import * as dotenv from "dotenv";
 import apiRouter from "./api-router";
 import {httpErrorHandler} from "./errors/http-error-handler";
-import {notFoundHandler} from "./errors/not-found-handler";
 
-if ( process.argv.length !== 4 )
+if ( process.argv.length !== 3 )
 {
-   console.error('Expected application arguments: <public-directory> <env-file>');
+   console.error('Expected application arguments: <public-directory>');
    process.abort();
 }
 const publicDir = process.argv[2];
-const envFile = process.argv[3];
-
-dotenv.config({ path: envFile});
 
 const PORT: number = process.env.PORT ? parseInt(process.env.PORT as string, 10): 3000;
 
