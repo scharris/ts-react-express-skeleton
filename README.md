@@ -5,9 +5,9 @@ Create folder `C:\Apps\dev`. Other folders can be used
 instead, but `C:\Apps` contents are exempted from virus
 scanning. Unzip the downloaded node distribution, and
 move/rename the resulting folder to be 
-`C:\Apps\dev\nodejs` (which should contain a `bin`
-folder). In control panel's "Edit environment variables
-for your account", add folder `C:\Apps\dev\nodejs\bin`
+`C:\Apps\dev\nodejs` (which should contain a `node.exe`
+). In control panel's "Edit environment variables
+for your account", add folder `C:\Apps\dev\nodejs`
 to the `Path` environment variable.
 
 ## Install client and server node packages
