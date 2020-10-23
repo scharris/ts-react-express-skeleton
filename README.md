@@ -10,6 +10,12 @@ move/rename the resulting folder to be
 for your account", add folder `C:\Apps\dev\nodejs`
 to the `Path` environment variable.
 
+## Run the application database
+This variant of the skeleton app uses a database to store
+the application data. Follow the instructions in
+`db/database-setup.md` to setup and run the application
+database before continuing.
+
 ## Install client and server node packages
 Start a new instance of PowerShell (so it will
 see the path changes just made), and navigate to
