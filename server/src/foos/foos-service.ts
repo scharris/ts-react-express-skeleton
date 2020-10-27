@@ -1,34 +1,44 @@
 import {Foo} from 'dto';
-import {execSql} from '../db/pool-executor';
+import {execSql, query} from '../db/pool-executor';
 
 export async function getFoos(searchText: string | null): Promise<Foo[]>
 {
    const sql =
-      "select id, name, category, description " +
-      "from foo " +
-      "where cast(id as text) ilike $1 or name ilike $1 or category ilike $1 or description ilike $1 " +
-      "order by id";
+     `select id, name, category, description
+      from foo
+      where
+         cast(id as varchar(20)) like :s or
+         lower(name) like :s or
+         lower(category) like :s
+         or lower(description) like :s
+      order by id`;
 
-   const res = await execSql(sql, ['%' + (searchText || '') + '%']);
+   const rows = await query(sql, {
+      "s": '%' + (searchText ? searchText.toLocaleLowerCase(): '') + '%'
+   });
 
-   return res.rows.map(rowToFoo);
+   return rows.map(rowToFoo);
 }
 
 export async function getFoo(id: number): Promise<Foo | null>
 {
-   const res = await execSql("select id, name, category, description from foo where id = $1", [id]);
+   const rows = await query(
+      "select id, name, category, description from foo where id = :1",
+      [id]
+   );
 
-   return res.rowCount !== 0 ? rowToFoo(res.rows[0]) : null;
+   return rows.length !== 0 ? rowToFoo(rows[0]) : null;
 }
 
 export async function createFoo(foo: Foo): Promise<void>
 {
    const res = await execSql(
-      "insert into foo(name, category, description) values($1, $2, $3)",
-      [foo.name, foo.category, foo.description]
+      "insert into foo(name, category, description) values(:1, :2, :3)",
+      [foo.name, foo.category, foo.description],
+      { autoCommit: true }
    );
 
-   if ( res.rowCount !== 1 )
+   if ( res.rowsAffected !== 1 )
       throw new Error('Expected one row to be modified when creating foo.');
 }
 
@@ -38,24 +48,24 @@ export async function updateFoo(id: number, foo: Foo): Promise<void>
       throw new Error("Cannot change foo id field via update.");
 
    const res = await execSql(
-      "update foo set name = $1, category = $2, description = $3 where id = $4",
-      [foo.name, foo.category, foo.description, id]
-   );
+      "update foo set name = :name, category = :cat, description = :descr where id = :id",
+      { "id": id, "name": foo.name, "cat": foo.category, "descr": foo.description },
+      { autoCommit: true }
+);
 
-   if ( res.rowCount !== 1 )
-      throw new Error('Expected one row to be modified when updating a foo, instead modified ' + res.rowCount + ".");
+   if ( res.rowsAffected !== 1 )
+      throw new Error(`Expected one row to be modified when updating a foo, got: ${res.rowsAffected}.`);
 }
 
 export async function removeFoo(id: number): Promise<void>
 {
-   const res = await execSql("delete from foo where id = $1", [id]);
+   const res = await execSql("delete from foo where id = :1", [id], { autoCommit: true });
 
-   if ( res.rowCount !== 1 )
-      throw new Error('Expected one row to be modified when deleting a foo, instead modified ' + res.rowCount + ".");
+   if ( res.rowsAffected !== 1 )
+      throw new Error(`Expected one row to be modified when deleting a foo, got ${res.rowsAffected}.`);
 }
-
 
 function rowToFoo(r: any): Foo
 {
-   return { id: r.id, name: r.name, category: r.category, description: r.description };
+   return { id: r.ID, name: r.NAME, category: r.CATEGORY, description: r.DESCRIPTION };
 }
