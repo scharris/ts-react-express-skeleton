@@ -1,16 +1,15 @@
 import * as oracledb from 'oracledb';
 import {Pool, Result, BindParameters, ExecuteOptions} from 'oracledb';
 
-const env = process.env;
-
-if ( !env.DB_USER || !env.DB_PASSWORD || !env.DB_HOST || !env.DB_SERVICE )
-   throw new Error("One or more required database connection values are not defined.");
-
 const POOL_NAME = 'app-db-conn-pool';
-
 
 export async function createPool(): Promise<Pool>
 {
+   const env = process.env;
+
+   if ( !env.DB_USER || !env.DB_PASSWORD || !env.DB_HOST || !env.DB_SERVICE )
+      throw new Error("One or more required database connection values are not defined.");
+
    return await oracledb.createPool({
       poolAlias: POOL_NAME,
       user: env.DB_USER,

@@ -1,5 +1,6 @@
 import express from "express";
 import helmet from "helmet";
+import * as dotenv from 'dotenv';
 import apiRouter from "./api-router";
 import {httpErrorHandler} from "./errors/http-error-handler";
 import {createPool, closePool} from './db/pool-executor';
@@ -31,13 +32,19 @@ async function init(staticResourcesDir: string, port: number): Promise<void>
    });
 }
 
-if ( process.argv.length !== 3 )
+////////////////////////////
+//       STARTUP          //
+////////////////////////////
+
+if ( process.argv.length !== 4 )
 {
-   console.error('Expected application arguments: <public-directory>');
+   console.error('Expected application arguments: <public-directory> <env-file>');
    process.abort();
 }
-
 const publicDir = process.argv[2];
+const envFile = process.argv[3];
+
+dotenv.config({ path: envFile });
 const port: number = process.env.PORT ? parseInt(process.env.PORT as string, 10): 3000;
 
 init(publicDir, port);
