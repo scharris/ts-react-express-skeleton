@@ -7,24 +7,30 @@ app in Docker.
 
 ### Database requirement
 This build does not provide a running instance of the database itself,
-it assumes you have credentials to access an existing database. The
-credentials should be provided via an environment file at
-`server/envs/oracle-dev.env`. See `server/envs/.env.template` which
-shows the required environment variables.
+it assumes you have the connection information required to access an
+existing database. The connection information should be provided via
+an environment file placed at `server/envs/oracle-dev.env` (not in
+version control since it must contain secrets). See 
+`server/envs/.env.template` for a template version of the required
+file which shows the required environment variables.
+
+The database should have the schema objects and test data as described
+in the SQL files `db/create-schema-objects.sql` and
+`db/create-test-data.sql`, which should be run in that order.
 
 ### Build application Docker image
 ```
 docker build -t reskel-ora .
 ```
-If an npm install step times out, try running off the FDA vpn network, then
+If an npm install step times out, try running off the FDA VPN, then
 reconnect before continuing.
 
 ### Run 
 ```
 docker run --name reskel -p 3000:3000 --env-file server/envs/oracle-dev.env reskel-ora
 ```
-Here we've used the environment file with database credentials described
-above.
+Here we've used the environment file with database connection information
+as described above.
  
 ### Stop / remove the container
 This necessary before running the container again.
