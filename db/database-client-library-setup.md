@@ -19,5 +19,3 @@ Next have an administrator install "Microsoft Visual C++ Redistributable for Vis
 https://support.microsoft.com/en-us/help/2977003/the-latest-supported-visual-c-downloads
 ```
 via the `x64: vc_redist.x64.exe` link.
-
-

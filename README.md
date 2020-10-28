@@ -1,4 +1,41 @@
-## Install Node.js
+## Building and running with Docker
+
+Because of the Oracle client libraries needed for database
+access, the easiest option to build and run the app without
+administrator rights on your machine is to build and run the
+app in Docker.
+
+### Database requirement
+This build does not provide a running instance of the database itself,
+it assumes you have credentials to access an existing database. The
+credentials should be provided via an environment file at
+`server/envs/oracle-dev.env`. See `server/envs/.env.template` which
+shows the required environment variables.
+
+### Build application Docker image
+```
+docker build -t reskel-ora .
+```
+If an npm install step times out, try running off the FDA vpn network, then
+reconnect before continuing.
+
+### Run 
+```
+docker run --name reskel -p 3000:3000 --env-file server/envs/oracle-dev.env reskel-ora
+```
+Here we've used the environment file with database credentials described
+above.
+ 
+### Stop / remove the container
+This necessary before running the container again.
+
+```
+docker rm -vf reskel
+```
+
+## Building and running without Docker
+
+### Install Node.js
 Download the 64 bit Windows zip distribution of
 Node.js from `https://nodejs.org/en/download/current/`.
 Create folder `C:\Apps\dev`. Other folders can be used
@@ -10,11 +47,10 @@ move/rename the resulting folder to be
 for your account", add folder `C:\Apps\dev\nodejs`
 to the `Path` environment variable.
 
-## Run the application database
-This variant of the skeleton app uses a database to store
-the application data. Follow the instructions in
-`db/database-setup.md` to setup and run the application
-database before continuing.
+### Setup database access
+This variant of the skeleton app uses Oracle client library
+to access a remote database. See `db/database-client-library-setup.md`
+for instructions. Some steps may require administrator access.
 
 ## Install client and server node packages
 Start a new instance of PowerShell (so it will

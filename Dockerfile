@@ -1,9 +1,11 @@
-# build:
+# Build:
 #   docker build -t reskel-ora .
 # If an npm install step times out, try running off the FDA vpn network, then
 # reconnect before continuing.
-# run (requires an env file for database login information):
+#
+# Run (requires an env file for database login information):
 #   docker run --name reskel -p 3000:3000 --env-file server/envs/oracle-dev.env reskel-ora
+# 
 # Stop (if running) and remove the container (necessary before running again):
 #   docker rm -vf reskel
 
