@@ -1,4 +1,6 @@
-## Install Node.js
+## Building and running for development, without Docker
+
+### Install Node.js
 Download the 64 bit Windows zip distribution of
 Node.js from `https://nodejs.org/en/download/current/`.
 Create folder `C:\Apps\dev`. Other folders can be used
@@ -10,7 +12,7 @@ move/rename the resulting folder to be
 for your account", add folder `C:\Apps\dev\nodejs`
 to the `Path` environment variable.
 
-## Install client and server node packages
+### Install client and server node packages
 Start a new instance of PowerShell (so it will
 see the path changes just made), and navigate to
 the react-skeleton directory.
@@ -33,7 +35,7 @@ providing static resources for the client app to
 the browser, and also the backend api services
 needed by the app:
 
-## Build complete client/server package
+### Build complete client/server package
 ```
 npm run build
 ```
@@ -41,7 +43,7 @@ npm run build
 When the build is complete, the combined client/server
 package will be contained in the `dist` directory.
 
-## Run the app
+### Run the app
 ```
 npm run start
 ```
@@ -53,7 +55,7 @@ in the top bar to navigate between pages of the
 app. The main functionality is a filtered list
 of "foo" items.
 
-## Build and run the app
+### Build and run the app
 We can build and run with one command via:
 ```
 npm run build-start
@@ -65,7 +67,7 @@ finished and ready for requests it will print
 whenever source code changes are made because of
 the required TypeScript compilation step.
 
-## Running in development mode
+### Running in development mode
 To run the app with live-reloading enabled for changes
 to the client source code, first run the server
 as usual:
@@ -91,3 +93,34 @@ function as before, but any changes made to client
 resource files (e.g. javascript, stylesheets) should be
 instantly reflected in the client user interface in the
 browser.
+
+## Building and running with Docker
+
+### Build application Docker image
+```
+docker build -t reskel-nodb .
+```
+If an npm install step times out, try running off the FDA VPN, then
+reconnect before continuing.
+
+### Run 
+```
+docker run --name reskel -p 3000:3000 reskel-nodb
+```
+ 
+### Stop / remove the container
+This necessary before running the container again.
+
+```
+docker rm -vf reskel
+```
+
+### Review logs
+```
+docker logs reskel
+```
+
+### Run a shell within the container
+```
+docker exec -it reskel /bin/bash
+```
