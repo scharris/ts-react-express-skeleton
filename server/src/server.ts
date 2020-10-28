@@ -48,6 +48,6 @@ const envFile = process.argv.length === 4 ? process.argv[3] : null;
 if ( envFile )
    dotenv.config({ path: envFile });
 
-const port: number = process.env.PORT ? parseInt(process.env.PORT as string, 10): 3000;
+const port: number = process.env.PORT ? parseInt(process.env.PORT as string, 10): 3001;
 
 init(publicDir, port);
