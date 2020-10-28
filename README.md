@@ -39,6 +39,16 @@ This necessary before running the container again.
 docker rm -vf reskel
 ```
 
+### Review logs
+```
+docker logs reskel
+```
+
+### Run a shell within the container
+```
+docker exec -it reskel /bin/bash
+```
+
 ## Building and running without Docker
 
 ### Install Node.js
