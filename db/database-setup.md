@@ -4,7 +4,6 @@ way to get a running database populated with test data is to
 run the `init-pg` PowerShell script. In PowerShell:
 
 ```
-cd react-skeleton
 db/init-pg
 ```
 
@@ -15,17 +14,17 @@ via `docker ps`. After the container has been started, you can
 close your shell and the container will continue running.
 
 
-While container `pg` started as above is running, you can run a
-`psql` Postgres command line client within it via:
+While container `foos-pg` started as above is running, you can
+run a `psql` Postgres command line client within it via:
 ```
-docker exec -it pg psql -U foos
+docker exec -it foos-pg psql -U foos
 ```
 
 This will allow you to enter database queries and commands.
 For example: `\d` to list tables/views/sequences, and
 `select * from foo;` to query table `foo`. You can exit by
-entering `exit`. Changes to the data will be persisted
-until the container is stopped.
+entering `exit` or via ctrl-d. Changes to the data will be
+persisted until the container is stopped.
 
 If you have other database access tools, you can use the following
 connection information to connect to the database:
@@ -39,7 +38,7 @@ connection information to connect to the database:
 
 To stop and remove the container:
 ```
-docker rm -vf pg
+docker rm -vf foos-pg
 ```
 
 # Manual setup of Postgres database
