@@ -36,6 +36,7 @@ export function createPool(): void
 
 export async function closePool(): Promise<void>
 {
+   console.log('\nClosing database connection pool.');
    await pool().end();
 }
 
