@@ -1,0 +1,29 @@
+version: '3.3'
+services:
+  reskel-db:
+    build: ./db
+    image: postgres:13
+    container_name: reskel-db
+    environment:
+      - POSTGRES_DB=foos
+      - POSTGRES_USER=foos
+      - POSTGRES_PASSWORD=foos
+    volumes:
+      - reskel_data:/var/lib/postgresql/data
+  reskel-app:
+    build: .
+    container_name: reskel-app
+    environment:
+      - DB_DATABASE=foos
+      - DB_USER=foos
+      - DB_PASSWORD=foos
+      - DB_HOST=localhost
+      - DB_PORT=5432
+      - DB_POOL_MAX_SIZE=4
+      - DB_POOL_MIN_SIZE=1
+    ports:
+      - 80:3001
+    depends_on:
+      - reskel-db
+volumes:
+  reskel_data:
