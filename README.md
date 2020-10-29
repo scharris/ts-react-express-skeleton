@@ -135,8 +135,7 @@ docker-compose up --build
 ```
 (Note the dash between "docker" and "compose", `docker-compose` is the command.)
 
-We've remapped the application server's port to 80 in the compose file, so the app
-can be accessed in the browser at `localhost` without a port number specified.
+The app can be accessed in the browser at `localhost:3000`.
 
 The `--build` argument to `docker-compose` above is to make sure that
 the app and database images are rebuilt before starting.  Caching of

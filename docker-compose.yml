@@ -23,7 +23,7 @@ services:
       - DB_POOL_MAX_SIZE=4
       - DB_POOL_MIN_SIZE=1
     ports:
-     - 80:3000
+     - 3000:3000
     depends_on:
       - foos-db
 volumes:
