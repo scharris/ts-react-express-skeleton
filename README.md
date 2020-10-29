@@ -6,47 +6,49 @@ administrator rights on your machine is to build and run the
 app in Docker.
 
 ### Database requirement
-This build does not provide a running instance of the database itself,
-it assumes you have the connection information required to access an
-existing database. The connection information should be provided via
-an environment file placed at `server/envs/oracle-dev.env` (not in
-version control since it must contain secrets). See 
-`server/envs/.env.template` for a template version of the required
-file which shows the required environment variables.
+This build does not provide an instance of the database
+itself. It assumes you have the connection information required
+to access an existing database. The connection information
+should be provided via an environment file placed at
+`server/envs/oracle-dev.env`, which is not in version control
+since it must contain secrets. See `server/envs/.env.template`
+for a template version of the required file which shows the
+required environment variables.
 
-The database should have the schema objects and test data as described
-in the SQL files `db/create-schema-objects.sql` and
-`db/create-test-data.sql`, which should be run in that order.
+The database should have the schema objects and test data as
+described in the SQL files `db/create-schema-objects.sql` and
+`db/create-test-data.sql`, which should be run in that order
+when initializing the schema.
 
 ### Build application Docker image
 ```
-docker build -t reskel-ora .
+docker build -t skel-ora .
 ```
 If an npm install step times out, try running off the FDA VPN, then
 reconnect before continuing.
 
 ### Run 
 ```
-docker run --name reskel -p 3000:3000 --env-file server/envs/oracle-dev.env reskel-ora
+docker run --name skel -p 3000:3000 --env-file server/envs/oracle-dev.env skel-ora
 ```
 Here we've used the environment file with database connection information
 as described above.
  
 ### Stop / remove the container
-This necessary before running the container again.
+This is necessary before the container can be started again.
 
 ```
-docker rm -vf reskel
+docker rm -vf skel
 ```
 
 ### Review logs
 ```
-docker logs reskel
+docker logs skel
 ```
 
 ### Run a shell within the container
 ```
-docker exec -it reskel /bin/bash
+docker exec -it skel /bin/bash
 ```
 
 ## Building and running without Docker
@@ -64,9 +66,11 @@ for your account", add folder `C:\Apps\dev\nodejs`
 to the `Path` environment variable.
 
 ### Setup database access
-This variant of the skeleton app uses Oracle client library
-to access a remote database. See `db/database-client-library-setup.md`
-for instructions. Some steps may require administrator access.
+This variant of the skeleton app uses Oracle client
+library to access a remote database. See
+`db/database-client-library-setup.md` for instructions.
+Some steps may require administrator access, such as the
+the installation of the Microsoft Visual C++ Redistributable.
 
 ## Install client and server node packages
 Start a new instance of PowerShell (so it will
