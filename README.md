@@ -31,6 +31,10 @@ different environment file having the same format
 to start the app with an environment file). The
 database should have schema objects and test data
 created as described in the SQL scripts in folder `db`.
+The schema setup is not necessary when running the
+database within Docker with the provided `init-pg`
+script because they are executed in the database as
+part of container startup.
 
 ### Install client and server node packages
 Start a new instance of PowerShell (so it will
@@ -114,50 +118,27 @@ resource files (e.g. javascript, stylesheets) should be
 instantly reflected in the client user interface in the
 browser.
 
-## Building and running with Docker
+## Building and running app and database together with Docker-Compose
 
-This way of running the application can be the easiest,
-(Docker being the only requirement), but may not offer the
-integration with development tools that you need for
-efficient long-term development. Development tools such as
-Visual Studio Code *can* be made to work very well in a
-mostly Docker-based development environment, but that is
-not attempted here, because most approaches require WSL2
-which we cannot use yet within FDA.
+With Docker-Compose, we can build and run the entire application system,
+consisting of the server and database, from a description given in file
+`docker-compose.yml`. This file lists services and their dependencies
+to each other. In our case the services consist of the database and
+the application server, with the application server service depending
+on the database service. Each service references a build directory
+containing a Dockerfile describing how the Docker image that will
+be run to implement the service should be built.
 
-### Database requirement
-Follow instructions in the `Run the application database`
-section, which describes running the database within Docker,
-or configuring the app to access another database. Make sure
-the database is running before running the application itself.
+To run the complete system, execute:
+```
+docker-compose up --build
+```
+(Note the dash between "docker" and "compose", `docker-compose` is the command.)
 
-### Build application Docker image
-```
-docker build -t reskel-pg .
-```
-If an npm install step times out, try running off the FDA VPN, then
-reconnect before continuing.
+We've remapped the application server's port to 80 in the compose file, so the app
+can be accessed in the browser at `localhost` without a port number specified.
 
-### Run 
-```
-docker run --name reskel -p 3000:3000 --env-file server/envs/pg-dev.env reskel-pg
-```
-Here we've used the environment file with database connection information
-as described in the `Run the application database` section.
- 
-### Stop / remove the container
-This necessary before running the container again.
-
-```
-docker rm -vf reskel
-```
-
-### Review logs
-```
-docker logs reskel
-```
-
-### Run a shell within the container
-```
-docker exec -it reskel /bin/bash
-```
+The `--build` argument to `docker-compose` above is to make sure that
+the app and database images are rebuilt before starting.  Caching of
+Docker image layers makes the rebuilding time negligible when their
+sources have not changed.

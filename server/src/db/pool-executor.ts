@@ -42,6 +42,13 @@ export async function closePool(): Promise<void>
 /** Do a query using the shared connection pool, returning the connection when completed. */
 export async function execSql(sql: string | QueryConfig, params: any[]): Promise<QueryResult>
 {
-   console.log(`Executing query`, sql, params);
-   return await pool().query(sql, params);
+   try
+   {
+      return await pool().query(sql, params);
+   }
+   catch(e)
+   {
+      console.error(`Error executing query: `, e, '\nsql: ', sql, ' params: ', params);
+      throw e;
+   }
 }
