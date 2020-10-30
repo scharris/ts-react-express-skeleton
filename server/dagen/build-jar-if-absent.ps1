@@ -1,13 +1,18 @@
+$ErrorActionPreference = 'Stop'
+Set-StrictMode -Version Latest
+$dagenVer = $args[0]
+
 $scriptDir = $PSScriptRoot
+$dagenRepoUrl = "https://github.com/scharris/dagen.git"
+$jarName = "dagen-$dagenVer.jar"
 
 function New-TempDir
 {
-    $parent = [System.IO.Path]::GetTempPath()
-    [string] $name = [System.Guid]::NewGuid()
-    New-Item -ItemType Directory -Path (Join-Path $parent $name)
+    $dirPath = Join-Path ([System.IO.Path]::GetTempPath()) ([System.Guid]::NewGuid().ToString())
+    New-Item -ItemType Directory -Path $dirPath
 }
 
-if ( -Not (Test-Path -Path $scriptDir/dagen.jar -PathType Leaf) )
+if ( -Not (Test-Path -Path $scriptDir/$jarName -PathType Leaf) )
 {
     Write-Host "Building dagen."
 
@@ -15,10 +20,11 @@ if ( -Not (Test-Path -Path $scriptDir/dagen.jar -PathType Leaf) )
     
     Write-Host "Building in directory $buildDir."
 
-    git clone https://github.com/scharris/dagen.git $buildDir
+    git clone --depth 1 --branch $dagenVer  $dagenRepoUrl $buildDir
+
     cmd.exe /c "cd $buildDir && mvn -DskipTests package"
 
-    Copy-Item $buildDir/target/dagen.jar $scriptDir/
+    Copy-Item $buildDir/target/dagen.jar $scriptDir/$jarName
 
     Remove-item -Recurse $buildDir -Force
 }
