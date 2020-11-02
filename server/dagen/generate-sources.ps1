@@ -19,7 +19,7 @@ finally
 $jsonSpecsDir = "$PSScriptRoot/specs-serializer/output"
 
 # Make json form of the query/mod specs from their typescript definitions.
-npm --prefix="$PSScriptRoot/specs-serializer" run make-spec-jsons output
+npm --prefix="$PSScriptRoot/specs-serializer" run make-spec-jsons output/
 
 # input directories
 $querySpecs = "$jsonSpecsDir/query-specs.json"
