@@ -14,31 +14,31 @@ via `docker ps`. After the container has been started, you can
 close your shell and the container will continue running.
 
 
-While container `foos-pg` started as above is running, you can
+While container `drugs-pg` started as above is running, you can
 run a `psql` Postgres command line client within it via:
 ```
-docker exec -it foos-pg psql -U foos
+docker exec -it drugs-pg psql -U drugs
 ```
 
 This will allow you to enter database queries and commands.
 For example: `\d` to list tables/views/sequences, and
-`select * from foo;` to query table `foo`. You can exit by
+`select * from drug;` to query table `drug`. You can exit by
 entering `exit` or via ctrl-d. Changes to the data will be
 persisted until the container is stopped.
 
 If you have other database access tools, you can use the following
 connection information to connect to the database:
-  - Via jdbc via url: `jdbc:postgresql://localhost:5432/foos`
+  - Via jdbc via url: `jdbc:postgresql://localhost:5432/drugs`
   - With connection parameters:
     - host: localhost
     - port: 5432
-    - user: foos
-    - database: foos
+    - user: drugs
+    - database: drugs
     - password: (ignored)
 
 To stop and remove the container:
 ```
-docker rm -vf foos-pg
+docker rm -vf drugs-pg
 ```
 
 # Manual setup of Postgres database
@@ -51,16 +51,16 @@ Note: If docker is available to to on your local machine, it may be
 easier to run the database via docker by calling the `init-pg`
 script, which has no prerequisits other than docker itself.
 
-## Create foos user and database
+## Create drugs user and database
 ```
 # psql -U postgres
-create user foos with password 'foos';
-create database foos owner foos;
+create user drugs with password 'drugs';
+create database drugs owner drugs;
 ```
 
-## Create and populate foos schema
+## Create and populate drugs schema
 ```
-# psql -U foos 
+# psql -U drugs 
 \i db/init/create-schema.sql
 \i db/init/create-schema-objects.sql
 \i db/init/create-test-data.sql

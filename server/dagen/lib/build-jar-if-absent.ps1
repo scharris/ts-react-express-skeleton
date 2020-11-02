@@ -1,10 +1,9 @@
-$ErrorActionPreference = 'Stop'
-Set-StrictMode -Version Latest
-$dagenVer = $args[0]
+param ([Parameter(Mandatory)] $DagenVersion)
+$ErrorActionPreference = 'Stop'; Set-StrictMode -Version Latest
 
 $scriptDir = $PSScriptRoot
 $dagenRepoUrl = "https://github.com/scharris/dagen.git"
-$jarName = "dagen-$dagenVer.jar"
+$jarName = "dagen-$DagenVersion.jar"
 
 function New-TempDir
 {
@@ -14,13 +13,15 @@ function New-TempDir
 
 if ( -Not (Test-Path -Path $scriptDir/$jarName -PathType Leaf) )
 {
-    Write-Host "Building dagen."
+    Write-Information "Building dagen."
+
+    Remove-item $scriptDir/*.jar
 
     $buildDir = New-TempDir
-    
-    Write-Host "Building in directory $buildDir."
 
-    git clone --depth 1 --branch $dagenVer  $dagenRepoUrl $buildDir
+    Write-Information "Building in directory $buildDir."
+
+    git clone --depth 1 --branch $DagenVersion  $dagenRepoUrl $buildDir
 
     cmd.exe /c "cd $buildDir && mvn -DskipTests package"
 
@@ -30,5 +31,5 @@ if ( -Not (Test-Path -Path $scriptDir/$jarName -PathType Leaf) )
 }
 else
 {
-    Write-Host "The dagen jar already exists, skipping its build."
+    Write-Information "The dagen jar already exists, skipping its build."
 }

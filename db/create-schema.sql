@@ -1,2 +1,2 @@
-create schema foos authorization foos;
-alter role foos set search_path to foos;
+create schema drugs authorization drugs;
+alter role drugs set search_path to drugs;

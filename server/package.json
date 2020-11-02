@@ -6,12 +6,14 @@
    "scripts": {
       "build-client-prod": "cd ../client && npm run build",
       "build-server-prod": "webpack --config webpack/prod.config.js",
+      "prebuild": "powershell dagen/generate-sources -DagenVer 1.3 -GeneratedSourceRoot src/generated",
       "build": "npm run build-client-prod && npm run build-server-prod",
       "start": "node dist/server dist/public envs/pg-dev.env",
       "build-start": "npm run build && npm run start",
       "build-server-dev": "webpack --config webpack/dev.nowatch.config.js",
       "start-client-dev": "cd ../client && npm run start",
-      "dev": "npm run build-server-dev && concurrently \"npm:start-client-dev\" \"npm:start\""
+      "dev": "npm run build-server-dev && concurrently \"npm:start-client-dev\" \"npm:start\"",
+      "fetch-dbmd": "powershell dagen/dbmd/fetch -DagenVer 1.3"
    },
    "keywords": [],
    "author": "",

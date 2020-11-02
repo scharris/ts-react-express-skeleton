@@ -1,0 +1,11 @@
+{
+   "compilerOptions": {
+      "module": "commonjs",
+      "noImplicitAny": true
+   },
+   "files": [
+      "../query-specs.ts",
+      "../mod-specs.ts",
+      "spec-types.ts"
+   ]
+}

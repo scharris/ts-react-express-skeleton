@@ -1,27 +1,27 @@
 $dbInit = "$PSScriptRoot"
 
-docker build -t foos-pg $dbInit
+docker build -t drugs-pg $dbInit
 
-docker run -d --name foos-pg --rm -p 5432:5432 --shm-size=256MB `
-  -e POSTGRES_USER=foos -e POSTGRES_PASSWORD=foos -e POSTGRES_DB=foos `
-  foos-pg
+docker run -d --name drugs-pg --rm -p 5432:5432 --shm-size=256MB `
+  -e POSTGRES_USER=drugs -e POSTGRES_PASSWORD=drugs -e POSTGRES_DB=drugs `
+  drugs-pg
 
-# While container 'foos-pg' started as above is running, you can run a
+# While container 'drugs-pg' started as above is running, you can run a
 # psql client within the container via:
-#    docker exec -it foos-pg psql -U foos
+#    docker exec -it drugs-pg psql -U drugs
 # This will allow you to enter database queries and commands.
-# foos=# select * from foo;
+# drugs=# select * from drug;
 # Type ctrl-d or "exit" to exit psql and return to your shell.
 #
 # Or connect from the host
 #  - with jdbc via url:
-#    jdbc:postgresql://localhost:5432/foos
+#    jdbc:postgresql://localhost:5432/drugs
 #  - or with connection parameters:
 #    host: localhost
 #    port: 5432
-#    user: foos
-#    database: foos
+#    user: drugs
+#    database: drugs
 #    (password is ignored)
 
 # To stop and remove the container:
-# docker rm -vf foos-pg
+# docker rm -vf drugs-pg
