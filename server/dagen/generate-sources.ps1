@@ -4,6 +4,14 @@ param(
 )
 $ErrorActionPreference = 'Stop'; Set-StrictMode -Version Latest
 
+# Do an npm install for the specs-serializer.
+try
+{
+  Push-Location "$PSScriptRoot/specs-serializer/"; npm install
+  if ($LASTEXITCODE -ne 0) { throw "npm install for dagen/specs-serializer failed with error." }
+}
+finally { Pop-Location }
+
 $jsonSpecsDir = "$PSScriptRoot/specs-serializer/output"
 
 # Make json form of the query/mod specs from their typescript definitions.
