@@ -1,5 +1,7 @@
 import Pool from 'pg-pool';
 import {Client, QueryConfig, QueryResult} from 'pg';
+import {getSql} from './sql-reader';
+import * as DrugsQuery from '../generated/query-types/drugs-query';
 
 
 let connPool: Pool<Client> | null = null;
@@ -40,7 +42,13 @@ export async function closePool(): Promise<void>
    await pool().end();
 }
 
-/** Do a query using the shared connection pool, returning the connection when completed. */
+export async function execSqlResource(resourceName: string, params: any[]): Promise<QueryResult>
+{
+   const sql = getSql(resourceName);
+   return execSql(sql, params);
+}
+
+/** Execute the given query using the shared connection pool, returning the connection when completed. */
 export async function execSql(sql: string | QueryConfig, params: any[]): Promise<QueryResult>
 {
    try

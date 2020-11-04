@@ -1,5 +1,6 @@
 const path = require("path");
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
    target: "node",
@@ -21,6 +22,11 @@ module.exports = {
       filename: "server.js"
    },
    plugins: [
-      new CleanWebpackPlugin()
+      new CleanWebpackPlugin(),
+      new CopyPlugin({
+         patterns: [
+            { from: path.join(__dirname, "../src/generated/sql"), to: "sql" },
+         ]
+      })
    ]
 };

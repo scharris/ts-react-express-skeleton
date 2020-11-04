@@ -18,37 +18,30 @@ finally
 
 $jsonSpecsDir = "$PSScriptRoot/specs-serializer/output"
 
-# Make json form of the query/mod specs from their typescript definitions.
-npm --prefix="$PSScriptRoot/specs-serializer" run make-spec-jsons output/
+# Make json form of the query specs from their typescript definitions.
+npm --prefix="$PSScriptRoot/specs-serializer" run make-query-specs-json output/
+if ($LASTEXITCODE -ne 0) { throw "Conversion of query specs to json format failed with error." }
 
 # input directories
 $querySpecs = "$jsonSpecsDir/query-specs.json"
-$modSpecs = "$jsonSpecsDir/mod-specs.json"
 $dbmd = "$PSScriptRoot/dbmd/dbmd.yml"
 # output directories
+$sqlDir = "$GeneratedSourceRoot/sql"
 $queryTypesDir = "$GeneratedSourceRoot/query-types"
-$querySqlsDir = "$GeneratedSourceRoot/sql/queries"
-$modStmtParamsDir = "$GeneratedSourceRoot/mod-stmt-params"
-$modStmtSqlsDir = "$GeneratedSourceRoot/sql/mod-stmts"
 $relMdsDir = "$GeneratedSourceRoot/schema-metadata"
 
 & "$PSScriptRoot/lib/build-jar-if-absent" $DagenVersion
 
 $JAR="$PSScriptRoot/lib/dagen-$DagenVersion.jar"
 
+Remove-Item $sqlDir/*.sql
+
 # queries
 Write-Output "Generating query SQL and matching TypeScript types."
-Remove-Item $queryTypesDir/*.ts, $querySqlsDir/*.sql
+Remove-Item $queryTypesDir/*.ts
 java -cp "$JAR" org.sqljson.QueryGeneratorMain --types-language:TypeScript  `
-   $dbmd $querySpecs $queryTypesDir $querySqlsDir
+   $dbmd $querySpecs $queryTypesDir $sqlDir
 if ($LASTEXITCODE -ne 0) { throw "Query generation failed with error." }
-
-# modification statements
-Write-Output "Generating mod statements and companion TypeScript modules."
-Remove-Item $modStmtParamsDir/*.ts, $modStmtSqlsDir/*.sql
-java -cp "$JAR" org.sqljson.ModStatementGeneratorMain --types-language:TypeScript `
-  $dbmd $modSpecs $modStmtParamsDir $modStmtSqlsDir
-if ($LASTEXITCODE -ne 0) { throw "Mod statement generation failed with error." }
 
 # relation metadatas
 Write-Output "Generating relation metadata Typescript module."

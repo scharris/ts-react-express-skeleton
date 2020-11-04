@@ -1,12 +1,14 @@
 {
   "name": "specs-serializer",
+  "repository": "https://github.com/scharris/ts-react-express-skeleton",
+  "license": "MIT",
   "version": "1.0.0",
   "description": "Generate query/mod-spec json files from TypeScript definitions.",
   "directories": {
     "lib": "../lib"
   },
   "scripts": {
-    "make-spec-jsons": "ts-node make-spec-jsons.ts"
+    "make-query-specs-json": "ts-node make-query-specs-json.ts"
   },
   "devDependencies": {
     "ts-node": "^9.0.0",

@@ -22,6 +22,7 @@ if ( -Not (Test-Path -Path $scriptDir/$jarName -PathType Leaf) )
     Write-Information "Building in directory $buildDir."
 
     git clone --depth 1 --branch $DagenVersion  $dagenRepoUrl $buildDir
+    if ($LASTEXITCODE -ne 0) { throw "Failed to fetch dagen version ${DagenVersion}." }
 
     cmd.exe /c "cd $buildDir && mvn -DskipTests package"
 

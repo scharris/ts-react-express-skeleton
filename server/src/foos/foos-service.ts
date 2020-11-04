@@ -1,28 +1,30 @@
 import {Foo} from 'dto';
-import {execSql} from '../db/pool-executor';
+import {execSql, execSqlResource} from '../db-access';
+import * as DrugsQuery from '../generated/query-types/drugs-query';
+import * as DrugHavingCidQuery from '../generated/query-types/drug-having-cid-query';
 
 export async function getFoos(searchText: string | null): Promise<Foo[]>
 {
-   const sql =
-      "select id, name, category, description " +
-      "from foo " +
-      "where cast(id as text) ilike $1 or name ilike $1 or category ilike $1 or description ilike $1 " +
-      "order by id";
+   const res = await execSqlResource(DrugsQuery.sqlResource, ['%' + (searchText || '') + '%']);
 
-   const res = await execSql(sql, ['%' + (searchText || '') + '%']);
+   const drugs: DrugsQuery.Drug[] = res.rows.map(r => r.json);
 
-   return res.rows.map(rowToFoo);
+   return drugs.map(drugToFoo);
 }
 
 export async function getFoo(id: number): Promise<Foo | null>
 {
-   const res = await execSql("select id, name, category, description from foo where id = $1", [id]);
+   const res = await execSqlResource(DrugHavingCidQuery.sqlResource, [id]);
 
-   return res.rowCount !== 0 ? rowToFoo(res.rows[0]) : null;
+   const drugs: DrugHavingCidQuery.Drug[] = res.rows.map(r => r.json);
+
+   return drugs.length === 0 ? null : drugToFoo(drugs[0]);
 }
 
 export async function createFoo(foo: Foo): Promise<void>
 {
+   // TODO: Use relation metadatas to build insert statements.
+   //       makeInsertSql(drugs.drug, [{ field: drugs.drug.cid, value: foo.id, paramName: "$1" }, ...]);
    const res = await execSql(
       "insert into foo(name, category, description) values($1, $2, $3)",
       [foo.name, foo.category, foo.description]
@@ -34,6 +36,7 @@ export async function createFoo(foo: Foo): Promise<void>
 
 export async function updateFoo(id: number, foo: Foo): Promise<void>
 {
+   // TODO
    if ( foo.id !== id )
       throw new Error("Cannot change foo id field via update.");
 
@@ -48,14 +51,19 @@ export async function updateFoo(id: number, foo: Foo): Promise<void>
 
 export async function removeFoo(id: number): Promise<void>
 {
+   // TODO
    const res = await execSql("delete from foo where id = $1", [id]);
 
    if ( res.rowCount !== 1 )
       throw new Error('Expected one row to be modified when deleting a foo, instead modified ' + res.rowCount + ".");
 }
 
-
-function rowToFoo(r: any): Foo
+function drugToFoo(d: DrugsQuery.Drug): Foo
 {
-   return { id: r.id, name: r.name, category: r.category, description: r.description };
+   const category = d.functionalCategories.some(cat => cat.categoryName.startsWith("Category A")) ? "A" : "B";
+   const description =
+      `drug with ${d.functionalCategories.length} categories, ` +
+      `${d.advisories.length} advisories, ` +
+      `${d.brands.length} brands`;
+   return { id: d.cid || 0, name: d.name, category, description };
 }
