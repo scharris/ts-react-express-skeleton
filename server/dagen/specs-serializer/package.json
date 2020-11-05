@@ -3,7 +3,7 @@
   "repository": "https://github.com/scharris/ts-react-express-skeleton",
   "license": "MIT",
   "version": "1.0.0",
-  "description": "Generate query/mod-spec json files from TypeScript definitions.",
+  "description": "Generate query specification files in json format from TypeScript definitions.",
   "directories": {
     "lib": "../lib"
   },

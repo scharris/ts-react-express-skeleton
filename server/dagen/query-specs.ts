@@ -14,31 +14,18 @@ function drugQuery
       tableJson: {
          table: "drug",
          fieldExpressions: [
+            { field: "id" },
             { field: "name" },
+            { field: "descr", jsonProperty: "description" },
+            { field: "category_code", jsonProperty: "category" },
             { field: "mesh_id" },
-            { field: "cid", generatedFieldType: "number | null" },
+            { field: "cid" },
             { field: "registered" },
             { field: "market_entry_date" },
             { field: "therapeutic_indications" },
             { expression: "$$.cid + 1000", jsonProperty: "cidPlus1000", generatedFieldType: "number | null" },
          ],
          childTableCollections: [
-            {
-               collectionName: "references",
-               tableJson: {
-                  table: "drug_reference",
-                  inlineParentTables: [
-                     {
-                        tableJson: {
-                           table: "reference",
-                           fieldExpressions: [
-                              { field: "publication" }
-                           ]
-                        }
-                     }
-                  ]
-               }
-            },
             {
                collectionName: "brands",
                tableJson: {
@@ -168,7 +155,7 @@ const queryGroupSpec: QueryGroupSpec = {
    outputFieldNameDefault: "CAMELCASE",
    querySpecs: [
       drugQuery("drugs query", { sql: "$$.name ilike $1" }),
-      drugQuery("drug having cid query", { sql: "$$.cid = $1" }),
+      drugQuery("drug for id query", { sql: "$$.cid = $1" }),
    ]
 };
 

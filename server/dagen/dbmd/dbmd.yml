@@ -354,6 +354,24 @@ relationMetadatas:
     length: null
     precision: 10
     fractionalDigits: 0
+  - name: "category_code"
+    databaseType: "varchar"
+    nullable: false
+    primaryKeyPartNumber: null
+    comment: null
+    jdbcTypeCode: 12
+    length: 1
+    precision: null
+    fractionalDigits: null
+  - name: "descr"
+    databaseType: "varchar"
+    nullable: true
+    primaryKeyPartNumber: null
+    comment: null
+    jdbcTypeCode: 12
+    length: 500
+    precision: null
+    fractionalDigits: null
   - name: "therapeutic_indications"
     databaseType: "varchar"
     nullable: true

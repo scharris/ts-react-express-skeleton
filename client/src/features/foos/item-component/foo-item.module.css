@@ -1,8 +1,54 @@
+.fooStack {
+   display: flex;
+   flex-flow: column nowrap;
+   margin-bottom: 20px;
+}
 
 .fooRow {
    display: grid;
    grid-template-columns: auto auto 1fr 1fr auto auto;
    align-items: center;
+   color: silver;
+   background: darkblue;
+   padding: 10px;
+}
+
+.associatedItems {
+   display: flex;
+   flex-flow: row wrap;
+   justify-content: space-around;
+}
+
+.associatedItems > * {
+   margin: 0 10px 0 10px;
+}
+
+.advisoryType {
+   color: silver;
+   background: #444;
+   padding: 5px;
+}
+
+.advisoryText {
+   border: 1px solid gray;
+   padding: 5px;
+   border-radius: 5px;
+}
+
+.authority {
+   color: darkgray;
+   padding: 5px;
+}
+
+.itemDivider {
+   border-top: 3px solid lightgray;
+   height: 10px;
+}
+
+.funcatsDescription {
+   border: 1px solid darkgreen;
+   padding: 5px;
+   border-radius: 5px;
 }
 
 button.edit {
@@ -47,3 +93,4 @@ button.delete {
    padding: 5px;
    margin: 0 10px;
 }
+

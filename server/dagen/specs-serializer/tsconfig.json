@@ -5,7 +5,6 @@
    },
    "files": [
       "../query-specs.ts",
-      "../mod-specs.ts",
-      "spec-types.ts"
+      "*.ts"
    ]
 }

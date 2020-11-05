@@ -27,3 +27,14 @@ button.action {
    cursor: pointer;
 }
 
+.labelValueGrid {
+   display: grid;
+   grid-template-columns: auto auto;
+   align-items: center;
+}
+
+.fieldLabel {
+   color: darkGray;
+   font-weight: bold;
+   margin-right: 10px;
+}

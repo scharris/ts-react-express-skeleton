@@ -19,6 +19,7 @@ finally
 $jsonSpecsDir = "$PSScriptRoot/specs-serializer/output"
 
 # Make json form of the query specs from their typescript definitions.
+Remove-Item "$PSScriptRoot/specs-serializer/output/*.json"
 npm --prefix="$PSScriptRoot/specs-serializer" run make-query-specs-json output/
 if ($LASTEXITCODE -ne 0) { throw "Conversion of query specs to json format failed with error." }
 

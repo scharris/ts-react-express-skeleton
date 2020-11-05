@@ -11,6 +11,7 @@
       "start": "node dist/server dist envs/pg-local-drugs.env",
       "build-start": "npm run build && npm run start",
       "build-server-dev": "webpack --config webpack/dev.nowatch.config.js",
+      "build-server-dev-start": "npm run build-server-dev && npm run start",
       "start-client-dev": "cd ../client && npm run start",
       "dev": "npm run build-server-dev && concurrently \"npm:start-client-dev\" \"npm:start\"",
       "fetch-dbmd": "powershell dagen/dbmd/fetch -DagenVer 1.5"

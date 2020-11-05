@@ -26,6 +26,8 @@ create table drug
   mesh_id varchar(7) constraint drug_meshid_un unique,
   drugbank_id varchar(7) constraint drug_drugbankid_un unique,
   cid integer,
+  category_code varchar(1) not null,
+  descr varchar(500),
   therapeutic_indications varchar(4000),
   registered timestamp with time zone,
   registered_by integer not null constraint drug_analyst_fk references analyst,
