@@ -57,7 +57,10 @@ export const FooItemsPage: FunctionComponent<RouteComponentProps> = (props) =>
                search={loadData} />
             { results }
          </div>
-         <FooItemEditor foo={null} completeEditing={createFoo} />
+         <div className={styles.newFooArea}>
+            <span className={styles.label}>Create new:</span>
+            <FooItemEditor foo={null} labels={true} completeEditing={createFoo} />
+         </div>
       </div>
    );
 }

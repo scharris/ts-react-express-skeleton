@@ -7,3 +7,9 @@ button.cancel {
    color: white;
    background-color: black;
 }
+
+.fieldArea {
+   display: flex;
+   flex-flow: row nowrap;
+   align-items: center;
+}

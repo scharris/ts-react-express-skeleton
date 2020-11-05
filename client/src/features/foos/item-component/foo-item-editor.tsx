@@ -7,6 +7,7 @@ import styles from './foo-item-editor.module.css';
 interface Props
 {
    foo: Foo | null;
+   labels?: boolean;
    completeEditing: (foo: Foo) => void;
    cancelEditing?: () => void;
 }
@@ -31,22 +32,31 @@ export const FooItemEditor: FunctionComponent<Props> = (props) =>
 
          { props.foo?.id ?
             <div className={fooStyles.id}>{props.foo?.id}</div>
-            : <span>Create new:</span>
+            : <span/>
          }
 
-         <div className={fooStyles.category}>
-            <input type="text"
-               value={category} onChange={e => setCategory(e.target.value)} />
+         <div className={styles.fieldArea}>
+            { props.labels && <span className="fieldLabel">Category: </span> }
+            <div className={fooStyles.category}>
+               <input type="text"
+                  value={category} onChange={e => setCategory(e.target.value)} />
+            </div>
          </div>
 
-         <div className={fooStyles.name}>
-            <input type="text"
-               value={name} onChange={e => setName(e.target.value)} />
+         <div className={styles.fieldArea}>
+            { props.labels && <span className="fieldLabel">Name: </span> }
+            <div className={fooStyles.name}>
+               <input type="text"
+                  value={name} onChange={e => setName(e.target.value)} />
+            </div>
          </div>
 
-         <div className={fooStyles.description}>
-            <input type="text"
-               value={description || ''} onChange={e => setDescription(e.target.value)} />
+         <div className={styles.fieldArea}>
+            { props.labels && <span className="fieldLabel">Description: </span> }
+            <div className={fooStyles.description}>
+               <input type="text"
+                  value={description || ''} onChange={e => setDescription(e.target.value)} />
+            </div>
          </div>
 
          <button className={classNames("action", styles.acceptEdits)} type="button"
