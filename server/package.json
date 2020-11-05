@@ -6,7 +6,7 @@
    "scripts": {
       "build-client-prod": "cd ../client && npm run build",
       "build-server-prod": "webpack --config webpack/prod.config.js",
-      "prebuild": "powershell dagen/generate-sources -DagenVer 1.5 -GeneratedSourceRoot src/generated",
+      "prebuild": "powershell dagen/generate-sources -DagenVer 1.5.1 -GeneratedSourceRoot src/generated",
       "build": "npm run build-client-prod && npm run build-server-prod",
       "start": "node dist/server dist envs/pg-local-drugs.env",
       "build-start": "npm run build && npm run start",
@@ -14,7 +14,7 @@
       "build-server-dev-start": "npm run build-server-dev && npm run start",
       "start-client-dev": "cd ../client && npm run start",
       "dev": "npm run build-server-dev && concurrently \"npm:start-client-dev\" \"npm:start\"",
-      "fetch-dbmd": "powershell dagen/dbmd/fetch -DagenVer 1.5"
+      "fetch-dbmd": "powershell dagen/dbmd/fetch -DagenVer 1.5.1"
    },
    "keywords": [],
    "author": "",

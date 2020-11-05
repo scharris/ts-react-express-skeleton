@@ -24,9 +24,10 @@ if ( -Not (Test-Path -Path $scriptDir/$jarName -PathType Leaf) )
     git clone --depth 1 --branch $DagenVersion  $dagenRepoUrl $buildDir
     if ($LASTEXITCODE -ne 0) { throw "Failed to fetch dagen version ${DagenVersion}." }
 
-    cmd.exe /c "cd $buildDir && mvn -DskipTests package"
+    cmd.exe /c "cd $buildDir && mvn -DskipTests package && mvn typescript-generator:generate@ts-spec-types"
 
     Copy-Item $buildDir/target/dagen.jar $scriptDir/$jarName
+    Copy-Item $buildDir/target/spec-types.ts $scriptDir/
 
     Remove-item -Recurse $buildDir -Force
 }

@@ -1,4 +1,4 @@
-import {QueryGroupSpec, QuerySpec, RecordCondition} from './specs-serializer/spec-types';
+import {QueryGroupSpec, QuerySpec, RecordCondition} from './lib/spec-types';
 
 function drugQuery
    (
@@ -145,7 +145,8 @@ function drugQuery
             }
          ],
          recordCondition: drugCond
-      }
+      },
+      orderBy: "$$.name"
    };
 }
 
