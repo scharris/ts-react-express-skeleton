@@ -4,36 +4,20 @@ param(
 )
 $ErrorActionPreference = 'Stop'; Set-StrictMode -Version Latest
 
-# Do an npm install for the specs-serializer.
-try
-{
-  Push-Location "$PSScriptRoot/specs-serializer/"
-  npm install
-  if ($LASTEXITCODE -ne 0) { throw "npm install for dagen/specs-serializer failed with error." }
-}
-finally
-{
-  Pop-Location
-}
+$SD = $PSScriptRoot
+$querySpecsJson = "$SD/query-specs.json"
 
-$jsonSpecsDir = "$PSScriptRoot/specs-serializer/output"
+# Make final query specifications (json format) from the query specs TypeScript module's default export.
+& "$SD/specs-serializer/make-query-specs-json" -InputTS $SD/query-specs.ts -OutputJson $querySpecsJson
 
-# Make json form of the query specs from their typescript definitions.
-Remove-Item "$PSScriptRoot/specs-serializer/output/*.json"
-npm --prefix="$PSScriptRoot/specs-serializer" run make-query-specs-json output/
-if ($LASTEXITCODE -ne 0) { throw "Conversion of query specs to json format failed with error." }
-
-# input directories
-$querySpecs = "$jsonSpecsDir/query-specs.json"
-$dbmd = "$PSScriptRoot/dbmd/dbmd.yml"
-# output directories
+$dbmd = "$SD/dbmd/dbmd.yml"
 $sqlDir = "$GeneratedSourceRoot/sql"
 $queryTypesDir = "$GeneratedSourceRoot/query-types"
 $relMdsDir = "$GeneratedSourceRoot/schema-metadata"
 
-& "$PSScriptRoot/lib/build-jar-if-absent" $DagenVersion
+& "$SD/lib/build-jar-if-absent" $DagenVersion
 
-$JAR="$PSScriptRoot/lib/dagen-$DagenVersion.jar"
+$JAR="$SD/lib/dagen-$DagenVersion.jar"
 
 Remove-Item $sqlDir/*.sql
 
@@ -41,7 +25,7 @@ Remove-Item $sqlDir/*.sql
 Write-Output "Generating query SQL and matching TypeScript types."
 Remove-Item $queryTypesDir/*.ts
 java -cp "$JAR" org.sqljson.QueryGeneratorMain --types-language:TypeScript  `
-   $dbmd $querySpecs $queryTypesDir $sqlDir
+   $dbmd $querySpecsJson $queryTypesDir $sqlDir
 if ($LASTEXITCODE -ne 0) { throw "Query generation failed with error." }
 
 # relation metadatas

@@ -16,7 +16,7 @@
       "build-server-dev": "webpack --config webpack/dev.nowatch.config.js",
       "build-start-server-dev": "npm run build-server-dev && npm run start",
       "start-client-dev": "cd ../client && npm run start",
-      "dev": "npm run build-server-dev && concurrently \"npm:start-client-dev\" \"npm:start\"",
+      "dev": "npm run build-server-dev && concurrently \"npm:start-client-dev\" \"npm:start\""
    },
    "keywords": [],
    "author": "",

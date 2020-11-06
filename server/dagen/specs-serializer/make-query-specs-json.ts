@@ -1,16 +1,25 @@
 import * as fs from 'fs';
-import * as path from 'path';
-import queryGroupSpec from '../query-specs';
 
-// First two args are the node/ts-node interpreters, so third is the first application arg.
-if ( process.argv.length !== 3 )
-   throw new Error("Expected one application argument.");
+// First two args are the node/ts-node interpreters, remaining args are the actual application args.
+if ( process.argv.length !== 4 )
+   throw new Error("make-query-specs-json.ts: Expected two application arguments.");
 
-const outputDir = process.argv[2];
+const inputTSModule = process.argv[2];
+const outputFilePath = process.argv[3];
 
-console.log(`Converting query specifications to json form.`)
+console.log(`Converting TypeScript query specifications to json form.`)
 
-fs.writeFileSync(
-   path.join(outputDir, "query-specs.json"),
-   JSON.stringify(queryGroupSpec, null, '  ')
-);
+import(inputTSModule)
+   .then(tsModule => {
+      const queryGroupSpec = tsModule.default;
+      fs.writeFileSync(
+         outputFilePath,
+         JSON.stringify(queryGroupSpec, null, '  ')
+      );
+   })
+   .catch(err => {
+      console.error("Error converting TypeScript query specifications: ", err);
+      process.exit(1);
+   });
+
+
