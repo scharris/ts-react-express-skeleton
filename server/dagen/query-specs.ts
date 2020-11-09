@@ -14,15 +14,15 @@ function drugQuery
       tableJson: {
          table: "drug",
          fieldExpressions: [
-            { field: "id" },
-            { field: "name" },
+            "id",
+            "name",
             { field: "descr", jsonProperty: "description" },
             { field: "category_code", jsonProperty: "category" },
-            { field: "mesh_id" },
-            { field: "cid" },
-            { field: "registered" },
-            { field: "market_entry_date" },
-            { field: "therapeutic_indications" },
+            "mesh_id",
+            "cid",
+            "registered",
+            "market_entry_date",
+            "therapeutic_indications",
             { expression: "$$.cid + 1000", jsonProperty: "cidPlus1000", generatedFieldType: "number | null" },
          ],
          childTableCollections: [
@@ -30,16 +30,12 @@ function drugQuery
                collectionName: "brands",
                tableJson: {
                   table: "brand",
-                  fieldExpressions: [
-                     { field: "brand_name" }
-                  ],
+                  fieldExpressions: [ "brand_name" ],
                   inlineParentTables: [
                      {
                         tableJson: {
                            table: "manufacturer",
-                           fieldExpressions: [
-                              { field: "name", jsonProperty: "manufacturer" }
-                           ]
+                           fieldExpressions: [ { field: "name", jsonProperty: "manufacturer" } ]
                         }
                      }
                   ]
@@ -49,9 +45,7 @@ function drugQuery
                collectionName: "advisories",
                tableJson: {
                   table: "advisory",
-                  fieldExpressions: [
-                     { field: "text", jsonProperty: "advisoryText" }
-                  ],
+                  fieldExpressions: [ { field: "text", jsonProperty: "advisoryText" } ],
                   inlineParentTables: [
                      {
                         tableJson: {
@@ -87,7 +81,7 @@ function drugQuery
                            table: "functional_category",
                            fieldExpressions: [
                               { field: "name", jsonProperty: "categoryName" },
-                              { field: "description" },
+                              "description",
                            ]
                         }
                      },
@@ -110,10 +104,7 @@ function drugQuery
                referenceName: "registeredByAnalyst",
                tableJson: {
                   table: "analyst",
-                  fieldExpressions: [
-                     { field: "id" },
-                     { field: "short_name" },
-                  ]
+                  fieldExpressions: [ "id", "short_name" ]
                }
             },
             {
@@ -123,21 +114,13 @@ function drugQuery
                ],
                tableJson: {
                   table: "compound",
-                  fieldExpressions: [
-                     { field: "display_name" },
-                     { field: "nctr_isis_id" },
-                     { field: "cas" },
-                     { field: "entered" },
-                  ],
+                  fieldExpressions: [ "display_name", "nctr_isis_id", "cas", "entered" ],
                   referencedParentTables: [
                      {
                         referenceName: "enteredByAnalyst",
                         tableJson: {
                            table: "analyst",
-                           fieldExpressions: [
-                              { field: "id" },
-                              { field: "short_name" },
-                           ]
+                           fieldExpressions: ["id", "short_name"]
                         }
                      }
                   ]

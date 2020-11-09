@@ -4,8 +4,8 @@
    "description": "",
    "main": "server.js",
    "scripts": {
-      "dagen": "powershell dagen/generate-sources -DagenVer 1.5.1 -GeneratedSourceRoot src/generated",
-      "dagen-dbmd": "powershell dagen/dbmd/fetch  -DagenVer 1.5.1",
+      "dagen": "powershell dagen/generate-sources -DagenVer 1.5.3 -GeneratedSourceRoot src/generated",
+      "dagen-dbmd": "powershell dagen/dbmd/fetch  -DagenVer 1.5.3",
       "build-client-prod": "cd ../client && npm run build",
       "build-server-prod": "webpack --config webpack/prod.config.js",
       "prebuild": "npm run dagen",

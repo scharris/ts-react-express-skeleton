@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 2.26.723 on 2020-11-05 16:52:43.
+// Generated using typescript-generator version 2.26.723 on 2020-11-09 08:36:56.
 
 export interface ChildCollectionSpec {
     collectionName: string;
@@ -22,12 +22,12 @@ export interface FieldPair {
 }
 
 export interface InlineParentSpec extends ParentSpec {
-    tableJson: TableJsonSpec;
-    viaForeignKeyFields?: Nullable<string[]>;
-    customJoinCondition?: Nullable<CustomJoinCondition>;
 }
 
 export interface ParentSpec {
+    tableJson: TableJsonSpec;
+    customJoinCondition?: Nullable<CustomJoinCondition>;
+    viaForeignKeyFields?: Nullable<string[]>;
 }
 
 export interface QueryGroupSpec {
@@ -57,27 +57,18 @@ export interface RecordCondition {
 
 export interface ReferencedParentSpec extends ParentSpec {
     referenceName: string;
-    tableJson: TableJsonSpec;
-    viaForeignKeyFields?: Nullable<string[]>;
-    customJoinCondition?: Nullable<CustomJoinCondition>;
-}
-
-export interface TableFieldExpr {
-    field?: Nullable<string>;
-    expression?: Nullable<string>;
-    withTableAliasAs?: Nullable<string>;
-    jsonProperty?: Nullable<string>;
-    generatedFieldType?: Nullable<string>;
 }
 
 export interface TableJsonSpec {
     table: string;
-    fieldExpressions?: Nullable<TableFieldExpr[]>;
+    fieldExpressions?: Nullable<(string | TableFieldExpr)[]>;
     inlineParentTables?: Nullable<InlineParentSpec[]>;
     referencedParentTables?: Nullable<ReferencedParentSpec[]>;
     childTableCollections?: Nullable<ChildCollectionSpec[]>;
     recordCondition?: Nullable<RecordCondition>;
 }
+
+export type TableFieldExpr = {field?: string; expression?: string; withTableAliasAs?: string; jsonProperty?: string; generatedFieldType?: string;};
 
 export type OutputFieldNameDefault = "AS_IN_DB" | "CAMELCASE";
 
