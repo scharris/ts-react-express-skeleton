@@ -61,6 +61,7 @@ needed by the app:
 
 ### Build complete client/server package
 ```
+# ( in server/ )
 npm run build
 ```
 
