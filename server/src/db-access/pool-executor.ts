@@ -26,7 +26,7 @@ export function createPool(): void
       password: env.DB_PASSWORD,
       host: env.DB_HOST || 'localhost',
       port: parseInt(env.DB_PORT as string, 10) || 5432,
-      ssl:  env.DB_USE_SSL ? env.DB_USE_SSL.toLowerCase() !== 'false' : true,
+      ssl:  env.DB_USE_SSL != null ? env.DB_USE_SSL.toLowerCase() !== 'false' : true,
       max: parseInt(env.DB_POOL_MAX_SIZE as string, 10) || 2, // set higher for prod
       connectionTimeoutMillis: 1000, // return an error after 1 second if connection could not be established
    });
