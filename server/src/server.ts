@@ -4,13 +4,11 @@ import * as dotenv from 'dotenv';
 import apiRouter from "./api-router";
 import {httpErrorHandler} from "./errors/http-error-handler";
 import {createPool, closePool} from './db/pool-executor';
+import { exit } from "process";
 
 async function init(staticResourcesDir: string, port: number): Promise<void>
 {
    await createPool();
-   process
-      .once('SIGTERM', closePool)
-      .once('SIGINT',  closePool);
 
    const app =
       express()
@@ -27,10 +25,14 @@ async function init(staticResourcesDir: string, port: number): Promise<void>
       .use(httpErrorHandler); // General http errors, other than 404.
 
    /** Run the server. */
-   app.listen(port, () => {
+   const server = app.listen(port, () => {
       console.log(`Listening on port ${port}`);
    });
+
+   function exit() { server.close(); closePool(); }
+   process.once('SIGTERM', exit).once('SIGINT',  exit);
 }
+
 
 ////////////////////////////
 //       STARTUP          //
