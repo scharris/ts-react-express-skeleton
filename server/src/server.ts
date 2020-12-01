@@ -21,9 +21,12 @@ async function init(staticResourcesDir: string, port: number): Promise<void>
          .use(httpErrorHandler); // General http errors, other than 404.
 
    /** Run the server. */
-   app.listen(port, () => {
+   const server = app.listen(port, () => {
       console.log(`Listening on port ${port}`);
    });
+
+   function exit() { server.close(); }
+   process.once('SIGTERM', exit).once('SIGINT',  exit);
 }
 
 ////////////////////////////
