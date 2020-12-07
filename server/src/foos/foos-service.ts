@@ -1,8 +1,8 @@
 import {Foo} from 'dto';
 import {execSql, execSqlResource, verifiedFieldNames, verifiedTableName} from '../db-access';
-import * as DrugsQuery from '../generated/query-types/drugs-query';
-import * as DrugForIdQuery from '../generated/query-types/drug-for-id-query';
-import {drugs as drugsSchema} from '../generated/schema-metadata/relations';
+import * as DrugsQuery from '../generated/ts/drugs-query';
+import * as DrugForIdQuery from '../generated/ts/drug-for-id-query';
+import {drugs as drugsSchema} from '../generated/ts/relations';
 
 
 export async function getFoos(searchText: string | null): Promise<Foo[]>

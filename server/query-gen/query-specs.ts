@@ -1,15 +1,15 @@
-import {QueryGroupSpec, QuerySpec, RecordCondition} from './lib/spec-types';
+import {QueryGroupSpec, QuerySpec, RecordCondition, CustomPropertyTypeFn, SimpleTableFieldProperty, ResultType} from 'sqljson-query';
 
 function drugQuery
    (
       name: string,
-      drugCond: RecordCondition | null
+      drugCond: RecordCondition | undefined
    )
    : QuerySpec
 {
    return {
       queryName: name,
-      resultsRepresentations: ["JSON_OBJECT_ROWS"],
+      resultRepresentations: ["JSON_OBJECT_ROWS"],
       generateResultTypes: true,
       tableJson: {
          table: "drug",
@@ -23,19 +23,19 @@ function drugQuery
             "registered",
             "market_entry_date",
             "therapeutic_indications",
-            { expression: "$$.cid + 1000", jsonProperty: "cidPlus1000", generatedFieldType: "number | null" },
+            { expression: "$$.cid + 1000", jsonProperty: "cidPlus1000", fieldTypeInGeneratedSource: "number | null" },
          ],
          childTableCollections: [
             {
                collectionName: "brands",
                tableJson: {
                   table: "brand",
-                  fieldExpressions: [ "brand_name" ],
+                  fieldExpressions: ["brand_name"],
                   inlineParentTables: [
                      {
                         tableJson: {
                            table: "manufacturer",
-                           fieldExpressions: [ { field: "name", jsonProperty: "manufacturer" } ]
+                           fieldExpressions: [{ field: "name", jsonProperty: "manufacturer" }]
                         }
                      }
                   ]
@@ -45,14 +45,14 @@ function drugQuery
                collectionName: "advisories",
                tableJson: {
                   table: "advisory",
-                  fieldExpressions: [ { field: "text", jsonProperty: "advisoryText" } ],
+                  fieldExpressions: [{ field: "text", jsonProperty: "advisoryText" }],
                   inlineParentTables: [
                      {
                         tableJson: {
                            table: "advisory_type",
                            fieldExpressions: [
                               { field: "name", jsonProperty: "advisoryType" },
-                              { expression: "(1 + 1)", jsonProperty: "exprYieldingTwo", generatedFieldType: "number" },
+                              { expression: "(1 + 1)", jsonProperty: "exprYieldingTwo", fieldTypeInGeneratedSource: "number" },
                            ],
                            inlineParentTables: [
                               {
@@ -104,7 +104,7 @@ function drugQuery
                referenceName: "registeredByAnalyst",
                tableJson: {
                   table: "analyst",
-                  fieldExpressions: [ "id", "short_name" ]
+                  fieldExpressions: ["id", "short_name"]
                }
             },
             {
@@ -114,7 +114,7 @@ function drugQuery
                ],
                tableJson: {
                   table: "compound",
-                  fieldExpressions: [ "display_name", "nctr_isis_id", "cas", "entered" ],
+                  fieldExpressions: ["display_name", "nctr_isis_id", "cas", "entered"],
                   referencedParentTables: [
                      {
                         referenceName: "enteredByAnalyst",
@@ -133,7 +133,7 @@ function drugQuery
    };
 }
 
-const queryGroupSpec: QueryGroupSpec = {
+export const queryGroupSpec: QueryGroupSpec = {
    defaultSchema: "drugs",
    generateUnqualifiedNamesForSchemas: ["drugs"],
    outputFieldNameDefault: "CAMELCASE",
@@ -143,4 +143,23 @@ const queryGroupSpec: QueryGroupSpec = {
    ]
 };
 
-export default queryGroupSpec;
+export function propertyTypeCustomizer
+   (
+      prop: SimpleTableFieldProperty,
+      resType: ResultType
+   )
+   : string | null
+{
+   if ( resType.queryName === 'drug for id query' &&
+        resType.table === 'analyst' &&
+        prop.name === 'shortName' )
+   {
+      return 'PersonShortName' + (prop.nullable ? ' | null' : '');
+   }
+   else if ( prop.databaseType === 'timestamptz' )
+   {
+      return 'TimestampTZ' + (prop.nullable ? ' | null' : '');
+   }
+
+   return null; // no customization,
+}

@@ -1,7 +1,6 @@
 import Pool from 'pg-pool';
 import {Client, QueryConfig, QueryResult} from 'pg';
 import {getSql} from './sql-reader';
-import * as DrugsQuery from '../generated/query-types/drugs-query';
 
 
 let connPool: Pool<Client> | null = null;
