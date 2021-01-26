@@ -2,9 +2,7 @@ $dbInit = "$PSScriptRoot"
 
 docker build -t foos-pg $dbInit
 
-docker run -d --name foos-pg --rm -p 5432:5432 --shm-size=256MB `
-  -e POSTGRES_USER=foos -e POSTGRES_PASSWORD=foos -e POSTGRES_DB=foos `
-  foos-pg
+docker run -d --name foos-pg --rm -p 127.0.0.1:5432:5432 --shm-size=256MB  foos-pg
 
 # While container 'foos-pg' started as above is running, you can run a
 # psql client within the container via:
