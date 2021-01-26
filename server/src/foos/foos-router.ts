@@ -40,12 +40,11 @@ router.get("/:id", async (req: Request, res: Response) =>
    }
 });
 
-
 router.post("/", async (req: Request, res: Response) =>
 {
    try
    {
-      const foo: Foo = req.body;
+      const foo: Foo = req.body.item;
 
       await FoosService.createFoo(foo);
 
@@ -63,7 +62,7 @@ router.put("/:id", async (req: Request, res: Response) =>
    {
       const id: number = parseInt(req.params.id, 10);
 
-      const foo: Foo = req.body;
+      const foo: Foo = req.body.item;
 
       if ( id !== foo.id )
       {
