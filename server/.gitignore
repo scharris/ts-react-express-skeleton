@@ -3,7 +3,7 @@
 /src/generated/
 /node_modules/
 /dist/
-
+/query-gen/
 /.idea/
 .DS_Store
 npm-debug.log*
